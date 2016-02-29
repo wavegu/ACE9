@@ -19,5 +19,6 @@ setup(
         "flask-sqlalchemy",
         'migrate',
         'sqlalchemy-migrate',
+        'itsdangerous'
     ],
 )

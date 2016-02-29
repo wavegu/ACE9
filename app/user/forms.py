@@ -3,7 +3,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 sys.dont_write_bytecode = True
-from user.user import User
+from user import User
 from flask_wtf import Form
 from wtforms import StringField
 from wtforms import BooleanField
@@ -36,7 +36,7 @@ class RegisterForm(Form):
             return False
         user = User.query.filter_by(email=self.email.data).first()
         if user:
-            self.email.errors.append("Email already registered")
+            self.email.errors.append("该邮箱已注册，请查收确认邮件并点击链接完成认证")
             return False
         return True
 

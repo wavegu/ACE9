@@ -6,6 +6,16 @@ sys.dont_write_bytecode = True
 
 from app import app
 from app import db
+from config import SERVER_IP
+from config import SERVER_PORT
+from user.user import User
+from user.user import ROLE_USER
 
-db.create_all()
-app.run(debug=True)
+
+def update_db():
+    db.create_all()
+
+
+if __name__ == '__main__':
+    update_db()
+    app.run(debug=True, host=SERVER_IP, port=SERVER_PORT)

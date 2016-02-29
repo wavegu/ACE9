@@ -12,12 +12,13 @@ sys.dont_write_bytecode = True
 
 # server
 SERVER_IP = '127.0.0.1'
+SERVER_PORT = 5000
 
 
 # CSRF
 CSRF_ENABLED = True
-SECRET_KEY = 'you-will-never-guess'
-
+SECRET_KEY = 'CSSUNB'
+SECURITY_PASSWORD_SALT = 'CSSUNB23333'
 
 # database
 
@@ -29,6 +30,19 @@ TEST_DB = 'test'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SQLALCHEMY_MIGRATE_REPO = join(DB_DIR, 'db_repo')
 SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % (join(DB_DIR, APP_DB))
+
+
+# mail settings
+
+MAIL_SERVER = 'smtp.126.com'
+MAIL_PORT = 25
+MAIL_USE_TLS = False
+MAIL_USE_SSL = False
+
+MAIL_USERNAME = ''
+MAIL_PASSWORD = ''
+
+MAIL_DEFAULT_SENDER = ''
 
 
 # openid
