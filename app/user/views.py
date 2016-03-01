@@ -65,7 +65,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        target = redirect(url_for('index', user_id=user.id))
+        target = redirect(url_for('index'))
         response = app.make_response(target)
         response.set_cookie('current_user_email', value=user.email)
 
@@ -80,33 +80,6 @@ def register():
 
         return response
     return render_template('user/register.html', form=form)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm(request.form)
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if not user:
-            flash('User not exist...', 'danger')
-            return render_template('user/login.html', form=form)
-        if bcrypt.check_password_hash(
-                user.password, request.form['password']):
-            login_user(user)
-            flash('Welcome.', 'success')
-            target = redirect(url_for('index', user_id=user.id))
-            response = app.make_response(target)
-            response.set_cookie('current_user_email', value=user.email)
-            return response
-        else:
-            flash('Invalid  password.', 'danger')
-            return render_template('user/login.html', form=form)
-    return render_template('user/login.html', form=form)
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 
 @app.route('/confirm/<token>')
@@ -127,3 +100,40 @@ def confirm_email(token):
         db.session.commit()
         flash('You have confirmed your account. Thanks!', 'success')
     return redirect(url_for('index'))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if not user:
+            flash('User not exist...', 'danger')
+            return render_template('user/login.html', form=form)
+        if bcrypt.check_password_hash(
+                user.password, request.form['password']):
+            login_user(user)
+            flash('Welcome.', 'success')
+            target = redirect(url_for('index'))
+            response = app.make_response(target)
+            response.set_cookie('current_user_email', value=user.email)
+            return response
+        else:
+            flash('Invalid  password.', 'danger')
+            return render_template('user/login.html', form=form)
+    return render_template('user/login.html', form=form)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    target = redirect(url_for('login'))
+    response = app.make_response(target)
+    response.delete_cookie('current_user_email')
+    flash('You were logged out.', 'success')
+    return response

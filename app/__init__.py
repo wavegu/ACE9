@@ -15,7 +15,7 @@ sys.setdefaultencoding('utf8')
 sys.dont_write_bytecode = True
  
 app = Flask(__name__)
-app.config.from_object('app.config')
+app.config.from_object('config.Config')
 
 db = SQLAlchemy(app)
 
